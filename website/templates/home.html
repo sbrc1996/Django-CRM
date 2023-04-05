@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+{% comment %} successfully logging in done {% endcomment %}
+<h1> Logged In and Home Page </h1>
+<h2>My Records...</h2>
+  <table class="table table-bordered border-primary">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email Id</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Address</th>
+        <th scope="col">City </th>
+        <th scope="col">State </th>
+        <th scope="col">Pincode </th>
+        <th scope="col">Creation Date & Time</th>
+        <th scope="col">Id</th>
+      </tr>
+    </thead>
+    <tbody class = "table-group-divider" >
+    
+      {% if records %}
+        {% for record in records %}   
+        {% comment %} this record is comming from the views.py file as a request  {% endcomment %}
+        <tr>
+              <td>{{ record.first_name }} </td>
+              <td>{{ record.last_name }}</td>
+              <td>{{ record.email }}</td>
+              <td>{{ record.phone }}</td>
+              <td>{{ record.address }}</td>
+              <td>{{ record.city }}</td>
+              <td>{{ record.state }}</td>
+              <td>{{ record.zipcode }}</td>
+              <td>{{ record.created_at }}</td>
+              <td><a href="{% url 'record' record.id %}">{{ record.id }}</a></td>
+              </br>  
+        </tr>
+        {% endfor %} 
+      {% endif%}
+    </tbody>
+  </table>
+  
+  
+{% else %}
+
+
+<h1>Login Page!!</h1>
+<form method = "POST" action = "{% url 'home' %}">
+     {% csrf_token %}
+      <div class="mb-3">
+      <label for="exampleInputEmail1" class="form-label">Username</label>
+      <input type="text" class="form-control" name= "username" placeholder= "Enter your Username" required>
+      <div id="emailHelp" class="form-text">We'll never share your username with anyone else.</div>
+    </div>
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label" >Password</label>
+      <input type="password" class="form-control" name= "password" placeholder= "Enter your Password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  
+</form>
+
+{% endif %} 
+
+{% endblock  %}
